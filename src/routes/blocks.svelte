@@ -4,7 +4,8 @@
   import { POSTGREST_URL, POKT_NODE_URL } from "$lib/constants"
   import { amp, browser, dev, mode, prerendering } from '$app/env';
   import moment from 'moment';
-  import { HttpRpcProvider, Configuration, Pocket } from '@pokt-network/pocket-js'
+  import pkg from '@pokt-network/pocket-js';
+  const { HttpRpcProvider, Configuration, Pocket } = pkg;
   import { getStores, navigating, page, session, updated } from '$app/stores';
 
   console.log(page)
