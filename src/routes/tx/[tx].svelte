@@ -4,7 +4,8 @@
   import { POSTGREST_URL, POKT_NODE_URL } from "$lib/constants"
   import { copy } from "$lib/utils/copy"
   import { amp, browser, dev, mode, prerendering } from '$app/env';
-  import { HttpRpcProvider, Configuration, Pocket } from '@pokt-network/pocket-js'
+  import pkg from '@pokt-network/pocket-js';
+  const { HttpRpcProvider, Configuration, Pocket } = pkg;
   import moment from 'moment';
 
   let requested_hash;
