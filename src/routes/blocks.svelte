@@ -60,6 +60,10 @@
   const price = getPrice()
 </script>
 
+<svelte:head>
+  <title>POKTwatch | Blocks</title>
+</svelte:head>
+
 <div class="wrapper">
   <Navbar />
   <main id="content" role="main">
