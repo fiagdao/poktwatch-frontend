@@ -4,8 +4,13 @@
   import { POSTGREST_URL, POKT_NODE_URL } from "$lib/constants"
   import { copy } from "$lib/utils/copy"
   import { amp, browser, dev, mode, prerendering } from '$app/env';
-  import pkg from '@pokt-network/pocket-js';
-  const { HttpRpcProvider, Configuration, Pocket } = pkg;
+  import { price } from '$lib/utils/price.ts';
+
+  // import pkg from '@pokt-network/pocket-js';
+  // const { HttpRpcProvider, Configuration, Pocket } = pkg;
+
+  import { HttpRpcProvider, Configuration, Pocket } from '@pokt-network/pocket-js';
+
   import moment from 'moment';
 
   let requested_hash;
@@ -45,17 +50,11 @@
     return tx[0]
   }
 
-  async function getPrice() {
-    return fetch("https://api.coingecko.com/api/v3/simple/price?ids=wrapped-thunderpokt&vs_currencies=usd")
-		.then(async function(result) {
-			return (await result.json())["wrapped-thunderpokt"]["usd"]
-		})
-  }
-
-  const price = getPrice()
-  console.log(pocketInstance.rpc().query.getTX(requested_hash))
 </script>
 
+<svelte:head>
+  <title>POKTwatch | Tx</title>
+</svelte:head>
 
 <div class="wrapper">
   <Navbar />
@@ -90,8 +89,6 @@
         <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
 
           <div id="ContentPlaceHolder1_maintable" class="card-body">
-            <div class="ow align-items-center"><div class="col-md-12 text-danger  font-weight-bold font-weight-sm-normal mb-1 mb-md-0">[ This is a POKT <strong>Testnet</strong> transaction only ]</div></div>
-            <hr class='hr-space'>
             <div class="row align-items-center mt-1">
               <div class="col-md-3 font-weight-bold font-weight-sm-normal mb-1 mb-md-0">Transaction Hash:</div>
               <div class="col-md-9">

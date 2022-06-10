@@ -1,11 +1,14 @@
 <script lang="ts">
   import Navbar from '$lib/components/Navbar.svelte';
   import Footer from '$lib/components/Footer.svelte';
+  import { price } from '$lib/utils/price.ts';
   import { POSTGREST_URL, POKT_NODE_URL } from "$lib/constants"
   import { amp, browser, dev, mode, prerendering } from '$app/env';
   import moment from 'moment';
-  import pkg from '@pokt-network/pocket-js';
-  const { HttpRpcProvider, Configuration, Pocket } = pkg;
+  // import pkg from '@pokt-network/pocket-js';
+  // const { HttpRpcProvider, Configuration, Pocket } = pkg;
+  import { HttpRpcProvider, Configuration, Pocket } from '@pokt-network/pocket-js';
+
   import { getStores, navigating, page, session, updated } from '$app/stores';
 
   console.log(page)
@@ -37,19 +40,15 @@
     return transactions
   }
 
-  async function getPrice() {
-    return fetch("https://api.coingecko.com/api/v3/simple/price?ids=wrapped-thunderpokt&vs_currencies=usd")
-		.then(async function(result) {
-			return (await result.json())["wrapped-thunderpokt"]["usd"]
-		})
-  }
-
-  const price = getPrice()
   const balance = pocketInstance.rpc().query.getBalance(requested_address)
   const node = pocketInstance.rpc().query.getNode(requested_address)
   console.log(node)
 
 </script>
+
+<svelte:head>
+  <title>POKTwatch | Address</title>
+</svelte:head>
 
 <div class="wrapper">
   <Navbar />
@@ -219,15 +218,13 @@
                             <td><i>{tx.height}</i></td>
                             {/if}
                             <td class="showAge "><span rel="tooltip" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="">{moment.utc(tx.timestamp).fromNow()}</span></td>
-                            <td><span style="white-space: nowrap;"><a class="hash-tag text-truncate" href="/address/{tx.signer.toLowerCase()}" data-boundary="viewport" data-html="true" data-toggle="tooltip" data-placement="bottom"
-                                  title="">{tx.signer.toLowerCase()}</a></span></td>
+                            <td><span style="white-space: nowrap;"><a class="hash-tag text-truncate" target="_self" href="/address/{tx.signer.toLowerCase()}">{tx.signer.toLowerCase()}</a></span></td>
                             {#if (tx.msg_type=="claim" || tx.recipient.toLowerCase() == requested_address)}
                               <td><span class="u-label u-label--xs u-label--success color-strong text-uppercase text-center w-100 rounded text-nowrap">&nbsp;IN&nbsp;</span></td>
                             {:else}
                               <td><span class="u-label u-label--xs u-label--warning color-strong text-uppercase text-center w-100 rounded text-nowrap">&nbsp;OUT&nbsp;</span></td>
                             {/if}
-                            <td><span style="white-space: nowrap;"><a class="hash-tag text-truncate" href="/address/{tx.recipient.toLowerCase()}" data-boundary="viewport" data-html="true" data-toggle="tooltip" data-placement="bottom"
-                                  title="">{tx.recipient.toLowerCase()}</a></span></td>
+                            <td><span style="white-space: nowrap;"><a class="hash-tag text-truncate" target="_self" href="/address/{tx.recipient.toLowerCase()}">{tx.recipient.toLowerCase()}</a></span></td>
                             <td><span data-toggle="tooltip" title="0 Pokt">{(tx.value/1000000).toFixed(2)} Pokt</span></td>
                           </tr>
                           {/each}
@@ -282,7 +279,7 @@
                         {#each transfers as tx}
                         <tr class:text-secondary={tx.height==-1} class:text-italic={tx.height==-1}>
                           <td>
-                            {#if tx.result_code!=0}
+                            {#if tx.result_code!=0 && tx.height!=-1}
                               <span class="text-danger" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Error in Txn: execution reverted">
                               <strong>
                               <i class="fa fa-exclamation-circle"></i>
@@ -298,14 +295,14 @@
                           <td><i>{tx.height}</i></td>
                           {/if}
                           <td class="showAge "><span rel="tooltip" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="">{moment.utc(tx.timestamp).fromNow()}</span></td>
-                          <td><span style="white-space: nowrap;"><a class="hash-tag text-truncate" href="/address/{tx.signer.toLowerCase()}" data-boundary="viewport" data-html="true" data-toggle="tooltip" data-placement="bottom"
+                          <td><span style="white-space: nowrap;"><a class="hash-tag text-truncate" target="_self" href="/address/{tx.signer.toLowerCase()}"
                                 title="">{tx.signer.toLowerCase()}</a></span></td>
                           {#if (tx.msg_type=="claim" || tx.recipient.toLowerCase() == requested_address)}
                             <td><span class="u-label u-label--xs u-label--success color-strong text-uppercase text-center w-100 rounded text-nowrap">&nbsp;IN&nbsp;</span></td>
                           {:else}
                             <td><span class="u-label u-label--xs u-label--warning color-strong text-uppercase text-center w-100 rounded text-nowrap">&nbsp;OUT&nbsp;</span></td>
                           {/if}
-                          <td><span style="white-space: nowrap;"><a class="hash-tag text-truncate" href="/address/{tx.recipient.toLowerCase()}" data-boundary="viewport" data-html="true" data-toggle="tooltip" data-placement="bottom"
+                          <td><span style="white-space: nowrap;"><a class="hash-tag text-truncate" target="_self" href="/address/{tx.recipient.toLowerCase()}"
                                 title="">{tx.recipient.toLowerCase()}</a></span></td>
                           <td><span data-toggle="tooltip" title="0 Pokt">{(tx.value/1000000).toFixed(2)} Pokt</span></td>
                         </tr>

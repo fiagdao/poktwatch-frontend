@@ -60,6 +60,10 @@
 
 </script>
 
+<svelte:head>
+  <title>POKTwatch | Block</title>
+</svelte:head>
+
 <div class="wrapper">
   <Navbar />
   {#await getBlock(requested_block)}

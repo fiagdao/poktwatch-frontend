@@ -1,19 +1,14 @@
 <script lang="ts">
   import Navbar from '$lib/components/Navbar.svelte';
   import Footer from '$lib/components/Footer.svelte';
+  import { price } from '$lib/utils/price.ts';
   import { POSTGREST_URL, POKT_NODE_URL } from "$lib/constants"
   import { amp, browser, dev, mode, prerendering } from '$app/env';
   import moment from 'moment';
-  import pkg from '@pokt-network/pocket-js';
-  const { HttpRpcProvider, Configuration, Pocket } = pkg;
   import { getStores, navigating, page, session, updated } from '$app/stores';
 
   console.log(page)
 
-  const dispatchURL = new URL(POKT_NODE_URL)
-  const rpcProvider = new HttpRpcProvider(dispatchURL)
-  const configuration = new Configuration(5, 1000, 0, 40000)
-  const pocketInstance = new Pocket([dispatchURL], rpcProvider, configuration)
   let requested_address= "---";
   let pageNumber = 0;
   const pageSize = 50;
@@ -25,12 +20,6 @@
     if (pageNumber==null || pageNumber<1) {
       pageNumber=1
     }
-  }
-
-  async function getTransfers(address) {
-    // gets transfers (not node stuff)
-    let transfers = await (await fetch(`${POSTGREST_URL}/transaction?order=height.desc&or=(recipient.eq.${address}, signer.eq.${address})&msg_type=eq.send&limit=${pageSize}&offset=${pageNumber*pageSize}`)).json()
-    return transfers
   }
 
   async function getTotalTxs(address) {
@@ -58,6 +47,31 @@
     return total
   }
 
+  async function getTotalPendingTxs(address) {
+    // total pending txs
+    let count;
+    if (address != null) {
+      address = address.toUpperCase()
+      count = await fetch(`${POSTGREST_URL}/transaction?limit=1&or=(recipient.eq.${address}, signer.eq.${address})&height=eq.-1`, {
+        method: 'HEAD',
+        headers: {
+          'Prefer': 'count=exact'
+        }
+      });
+    }
+    else {
+      count = await fetch(`${POSTGREST_URL}/transaction?limit=1&height=eq.-1`, {
+        method: 'HEAD',
+        headers: {
+          'Prefer': 'count=planned'
+        }
+      });
+    }
+
+    const total = count.headers.get('content-range').split("/")[1]
+    return total
+  }
+
   async function getTxs(address) {
     let transactions;
     // gets all transactions (not node stuff)
@@ -66,17 +80,10 @@
       transactions = await (await fetch(`${POSTGREST_URL}/transaction?order=id.desc&or=(recipient.eq.${address}, signer.eq.${address})&limit=${pageSize}&offset=${(pageNumber-1)*pageSize}`)).json()
     }
     else {
-      transactions = await (await fetch(`${POSTGREST_URL}/transaction?order=id.desc&limit=${pageSize}&offset=${(pageNumber-1)*pageSize}`)).json()
+      transactions = await (await fetch(`${POSTGREST_URL}/transaction?order=id.desc&limit=${pageSize}&offset=${(pageNumber-1)*pageSize}&height=not.eq.-1`)).json()
     }
     console.log("txs", transactions)
     return transactions
-  }
-
-  async function getPrice() {
-    return fetch("https://api.coingecko.com/api/v3/simple/price?ids=wrapped-thunderpokt&vs_currencies=usd")
-		.then(async function(result) {
-			return (await result.json())["wrapped-thunderpokt"]["usd"]
-		})
   }
 
   async function changePage(page) {
@@ -88,8 +95,11 @@
     }
   }
 
-  const price = getPrice()
 </script>
+
+<svelte:head>
+  <title>POKTwatch | TXS</title>
+</svelte:head>
 
 <div class="wrapper">
   <Navbar />
@@ -116,6 +126,10 @@
               <span class="d-flex align-items-center">
               <i id="spinwheel" class="fa fa-spin fa-spinner fa-1x fa-pulse mr-1" style="display: none;"></i>
               A total of {total} transactions found
+              {#await getTotalPendingTxs(requested_address)}
+              {:then total}
+               with {total} pending transactions
+              {/await}
               </span>
               </p>
               <nav aria-label="page navigation">
@@ -197,7 +211,7 @@
                         {#each txs as tx}
                           <tr class:text-secondary={tx.height==-1} class:text-italic={tx.height==-1}>
                             <td>
-                              {#if tx.result_code!=0}
+                              {#if tx.result_code!=0 && tx.height!=-1}
                                 <span class="text-danger" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Error in Txn: execution reverted">
                                 <strong>
                                 <i class="fa fa-exclamation-circle"></i>

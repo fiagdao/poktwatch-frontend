@@ -2,14 +2,9 @@
   import Navbar from '$lib/components/Navbar.svelte';
   import Footer from '$lib/components/Footer.svelte';
   import { POSTGREST_URL, POKT_NODE_URL } from "$lib/constants"
+  import { price } from '$lib/utils/price.ts';
   import moment from 'moment';
 
-  async function getPrice() {
-    return fetch("https://api.coingecko.com/api/v3/simple/price?ids=wrapped-thunderpokt&vs_currencies=usd")
-		.then(async function(result) {
-			return (await result.json())["wrapped-thunderpokt"]["usd"]
-		})
-  }
   async function getPulse() {
     let pulse = await (await fetch(`${POSTGREST_URL}/pulse`)).json()
 
@@ -26,11 +21,34 @@
     return txs
   }
 
+  async function getTotalRelays() {
+    let blocks = await (await fetch(`${POSTGREST_URL}/block?order=id.desc&limit=96`)).json()
+    let relays = 0
+    for (let i = 0; i < blocks.length; i++) {
+      relays += blocks[i].relays;
+
+    }
+
+    return relays
+  }
+
+  function intToString (value) {
+    var suffixes = ["", "k", "m", "b","t"];
+    var suffixNum = Math.floor((""+value).length/3);
+    var shortValue = parseFloat((suffixNum != 0 ? (value / Math.pow(1000,suffixNum)) : value).toPrecision(2));
+    if (shortValue % 1 != 0) {
+        shortValue = shortValue.toFixed(1);
+    }
+    return shortValue+suffixes[suffixNum];
+  }
+
   const pulse = getPulse()
-  const price = getPrice()
 
 </script>
 
+<svelte:head>
+  <title>POKTwatch</title>
+</svelte:head>
 
 <div class="wrapper">
   <main id="content" role="main">
@@ -92,9 +110,10 @@
                 <div class="media-body">
                   <h2 class="font-size-1 text-uppercase text-secondary mb-0">Relays
                   </h2>
-                  <a class="text-size-1 text-link" data-toggle="tooltip" data-placement="top" data-title="View More" href="/stat/supply">
-                    COMING SOON
-                  </a>
+                  {#await getTotalRelays()}
+                  {:then result}
+                  <span class='text-size-1' rel='tooltip' data-toggle='tooltip' data-placement='left' data-html='true' title='The price of POKT (from coingecko api)'>{intToString(result)}</span>
+                  {/await}
                 </div>
               </div>
               <hr class="d-block d-md-none hr-space-lg">
