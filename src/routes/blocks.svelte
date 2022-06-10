@@ -2,6 +2,7 @@
   import Navbar from '$lib/components/Navbar.svelte';
   import Footer from '$lib/components/Footer.svelte';
   import { POSTGREST_URL, POKT_NODE_URL } from "$lib/constants"
+  import { price } from '$lib/utils/price.ts';
   import { amp, browser, dev, mode, prerendering } from '$app/env';
   import moment from 'moment';
   import pkg from '@pokt-network/pocket-js';
@@ -46,18 +47,9 @@
     return blocks;
   }
 
-  async function getPrice() {
-    return fetch("https://api.coingecko.com/api/v3/simple/price?ids=wrapped-thunderpokt&vs_currencies=usd")
-		.then(async function(result) {
-			return (await result.json())["wrapped-thunderpokt"]["usd"]
-		})
-  }
-
   async function changePage(page) {
     window.location.href=`blocks?p=${page}`
   }
-
-  const price = getPrice()
 </script>
 
 <svelte:head>

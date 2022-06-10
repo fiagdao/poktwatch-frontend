@@ -1,12 +1,5 @@
 <script lang="ts">
-  async function getPrice() {
-    return fetch("https://api.coingecko.com/api/v3/simple/price?ids=wrapped-thunderpokt&vs_currencies=usd")
-		.then(async function(result) {
-			return (await result.json())["wrapped-thunderpokt"]["usd"]
-		})
-  }
-
-  const price = getPrice()
+  import { price } from '$lib/utils/price.ts';
 </script>
 
 <header id="header" class="u-header">
