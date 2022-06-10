@@ -108,13 +108,10 @@
                   </div>
                 </div>
                 {:then node}
-                  {#if node.stakedTokens != undefined}
+                  {#if node.node.stakedTokens != undefined}
                   <div class="card-body">
                     <div class="row">
                       <div class="col-md-4 mb-1 mb-md-0"> Balance: </div>
-                      <script>
-                        console.log({node})
-                      </script>
                       <div class="col-md-8"><span id="Public_Private_Tag">{(Number(node.node.stakedTokens)/1000000).toFixed(2)}</span></div>
                     </div>
                     <hr class="hr-space">
@@ -122,7 +119,7 @@
                       <div class="col-md-4 mb-1 mb-md-0"> Value: </div>
                       {#await price}
                       {:then price}
-                        <div class="col-md-8"><span id="Public_Private_Tag"> </span><span class='small' style='position:relative;top:-1px'>${(Number(node.node.stakedTokens)/1000000*price).toFixed(2)} (@ ${price.toFixed(2)}/POKT)</span></div>
+                        <div class="col-md-8">{(Number(node.node.stakedTokens)/1000000*price).toFixed(2)}<span class='small' style='position:relative;top:-1px'>$ (@ ${price.toFixed(2)}/POKT)</span></div>
                       {/await}
                     </div>
                     <hr class="hr-space">
@@ -133,7 +130,12 @@
                     <hr class="hr-space">
                     <div class="row">
                       <div class="col-md-4 mb-1 mb-md-0"> Public Key: </div>
-                      <div class="col-md-8"><span id="Public_Private_Tag"> </span><span id="Public_Private_Tag_edit_button">{node.node.public_key}</span></div>
+                      <div class="col-md-8"><span id="Public_Private_Tag"> </span><span id="Public_Private_Tag_edit_button">{node.node.publicKey}</span></div>
+                    </div>
+                    <hr class="hr-space">
+                    <div class="row">
+                      <div class="col-md-4 mb-1 mb-md-0"> Service Url: </div>
+                      <div class="col-md-8"><span id="Public_Private_Tag"> </span><span id="Public_Private_Tag_edit_button">{node.node.serviceURL.host}</span></div>
                     </div>
                   </div>
                   {:else}
