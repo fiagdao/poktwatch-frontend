@@ -9,7 +9,7 @@ npm run dev
 npm run dev -- --open
 ```
 
-If you want to run your own indexer change the URL in /src/lib/constants.ts
+If you want to run your own indexer change the URL in `/src/lib/constants.ts`
 
 ## Building
 
