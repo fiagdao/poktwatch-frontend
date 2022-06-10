@@ -108,7 +108,7 @@
                   </div>
                 </div>
                 {:then node}
-                  {#if node.stakedTokens != undefined}
+                  {#if node.node.stakedTokens != undefined}
                   <div class="card-body">
                     <div class="row">
                       <div class="col-md-4 mb-1 mb-md-0"> Balance: </div>
@@ -133,7 +133,12 @@
                     <hr class="hr-space">
                     <div class="row">
                       <div class="col-md-4 mb-1 mb-md-0"> Public Key: </div>
-                      <div class="col-md-8"><span id="Public_Private_Tag"> </span><span id="Public_Private_Tag_edit_button">{node.node.public_key}</span></div>
+                      <div class="col-md-8"><span id="Public_Private_Tag"> </span><span id="Public_Private_Tag_edit_button">{node.node.publicKey}</span></div>
+                    </div>
+                    <hr class="hr-space">
+                    <div class="row">
+                      <div class="col-md-4 mb-1 mb-md-0"> Service URL: </div>
+                      <div class="col-md-8"><span id="Public_Private_Tag"> </span><span id="Public_Private_Tag_edit_button">{node.node.serviceURL.host}</span></div>
                     </div>
                   </div>
                   {:else}
