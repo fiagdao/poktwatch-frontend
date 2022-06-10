@@ -89,6 +89,9 @@
         <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
 
           <div id="ContentPlaceHolder1_maintable" class="card-body">
+          <div class="row align-items-center mb-4"><div class="col-md-12 text-danger font-weight-bold font-weight-md-normal mb-1 mb-md-0">[ This is a Pocket <strong>Testnet</strong> transaction only ]</div></div>
+          <hr class="hr-space">
+
             <div class="row align-items-center mt-1">
               <div class="col-md-3 font-weight-bold font-weight-sm-normal mb-1 mb-md-0">Transaction Hash:</div>
               <div class="col-md-9">
@@ -184,10 +187,7 @@
                       <div class="col-md-9">
                         <span id="ContentPlaceHolder1_spanValue"><span data-toggle='tooltip' title='The amount of Pokt to be transferred to the recipient with the transaction'>
                         <span class='u-label u-label--value u-label--secondary text-dark rounded mr-1'>{tx.value/1000000} Pokt</span>
-                        {#await price}
-                        {:then result}
-                        (${(tx.value/1000000*result).toFixed(2)})
-                        {/await}
+                  
                         </span>
 
                         </span>

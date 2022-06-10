@@ -9,11 +9,7 @@
         <div class="w-lg-auto"><a class="navbar-brand  pt-md-0" href="/" target="_parent" aria-label="poktwatch"><img id="logo-header" width="200" src='/static/images/poktwatch-transparent.svg' alt="poktwatch Logo"></a>
           <div id="ethPrice">
             <div class="d-none d-md-inline-block u-label u-label--price rounded mt-1 ml-n1 text-nowrap">
-              {#await price}
-                <span class="text-dark">Pokt: loading...</span>
-              {:then price}
-                <span class="text-dark">Pokt: {price.toFixed(2)}</span>
-              {/await}
+              <span class="text-dark">Pocket Testnet</span>
             </div>
           </div>
         </div>

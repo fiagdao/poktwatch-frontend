@@ -78,18 +78,6 @@
                       <div class="col-md-8">{Number(balance.balance)/1000000} Pokt</div>
                     {/await}
                   </div>
-                  <hr class="hr-space">
-                  <div class="row align-items-center">
-                    <div class="col-md-4 mb-1 mb-md-0"><span class='d-md-none d-lg-inline-block mr-1'>Pokt</span>Value:</div>
-                    {#await price}
-                      <div class="col-md-8">---</div>
-                    {:then price}
-                      {#await balance}
-                      {:then balance}
-                        <div class="col-md-8">${(Number(balance.balance)*price/1000000).toFixed(2)}<span class='small' style='position:relative;top:-1px'> (@ ${price.toFixed(2)}/POKT)</span></div>
-                      {/await}
-                    {/await}
-                  </div>
                 </div>
               </div>
             </div>
