@@ -218,15 +218,13 @@
                             <td><i>{tx.height}</i></td>
                             {/if}
                             <td class="showAge "><span rel="tooltip" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="">{moment.utc(tx.timestamp).fromNow()}</span></td>
-                            <td><span style="white-space: nowrap;"><a class="hash-tag text-truncate" href="/address/{tx.signer.toLowerCase()}" data-boundary="viewport" data-html="true" data-toggle="tooltip" data-placement="bottom"
-                                  title="">{tx.signer.toLowerCase()}</a></span></td>
+                            <td><span style="white-space: nowrap;"><a class="hash-tag text-truncate" target="_self" href="/address/{tx.signer.toLowerCase()}">{tx.signer.toLowerCase()}</a></span></td>
                             {#if (tx.msg_type=="claim" || tx.recipient.toLowerCase() == requested_address)}
                               <td><span class="u-label u-label--xs u-label--success color-strong text-uppercase text-center w-100 rounded text-nowrap">&nbsp;IN&nbsp;</span></td>
                             {:else}
                               <td><span class="u-label u-label--xs u-label--warning color-strong text-uppercase text-center w-100 rounded text-nowrap">&nbsp;OUT&nbsp;</span></td>
                             {/if}
-                            <td><span style="white-space: nowrap;"><a class="hash-tag text-truncate" href="/address/{tx.recipient.toLowerCase()}" data-boundary="viewport" data-html="true" data-toggle="tooltip" data-placement="bottom"
-                                  title="">{tx.recipient.toLowerCase()}</a></span></td>
+                            <td><span style="white-space: nowrap;"><a class="hash-tag text-truncate" target="_self" href="/address/{tx.recipient.toLowerCase()}">{tx.recipient.toLowerCase()}</a></span></td>
                             <td><span data-toggle="tooltip" title="0 Pokt">{(tx.value/1000000).toFixed(2)} Pokt</span></td>
                           </tr>
                           {/each}
@@ -297,14 +295,14 @@
                           <td><i>{tx.height}</i></td>
                           {/if}
                           <td class="showAge "><span rel="tooltip" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="">{moment.utc(tx.timestamp).fromNow()}</span></td>
-                          <td><span style="white-space: nowrap;"><a class="hash-tag text-truncate" href="/address/{tx.signer.toLowerCase()}" data-boundary="viewport" data-html="true" data-toggle="tooltip" data-placement="bottom"
+                          <td><span style="white-space: nowrap;"><a class="hash-tag text-truncate" target="_self" href="/address/{tx.signer.toLowerCase()}"
                                 title="">{tx.signer.toLowerCase()}</a></span></td>
                           {#if (tx.msg_type=="claim" || tx.recipient.toLowerCase() == requested_address)}
                             <td><span class="u-label u-label--xs u-label--success color-strong text-uppercase text-center w-100 rounded text-nowrap">&nbsp;IN&nbsp;</span></td>
                           {:else}
                             <td><span class="u-label u-label--xs u-label--warning color-strong text-uppercase text-center w-100 rounded text-nowrap">&nbsp;OUT&nbsp;</span></td>
                           {/if}
-                          <td><span style="white-space: nowrap;"><a class="hash-tag text-truncate" href="/address/{tx.recipient.toLowerCase()}" data-boundary="viewport" data-html="true" data-toggle="tooltip" data-placement="bottom"
+                          <td><span style="white-space: nowrap;"><a class="hash-tag text-truncate" target="_self" href="/address/{tx.recipient.toLowerCase()}"
                                 title="">{tx.recipient.toLowerCase()}</a></span></td>
                           <td><span data-toggle="tooltip" title="0 Pokt">{(tx.value/1000000).toFixed(2)} Pokt</span></td>
                         </tr>
