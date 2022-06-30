@@ -4,7 +4,7 @@
       <div class="col-lg-3 mb-4 mb-lg-0">
         <div class="d-flex h-100 flex-column">
           <div class="d-flex align-items-center mb-4">
-            <img width="20" src="static/images/pokt-logo.svg" alt="POKT Logo">
+            <img width="20" src="/static/images/pokt-logo.svg" alt="POKT Logo">
             <span class="h4 text-white mb-0 ml-3">Powered by POKT</span>
           </div>
           <p class="text-white">Poktwatch is a Block Explorer and Analytics Platform for POKT, a decentralized node platform. It was created by Thunderhead, a big POKT community contributor</p>
