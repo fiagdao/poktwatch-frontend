@@ -107,7 +107,7 @@
             <div class="row align-items-center">
               <div class="col-md-3 font-weight-bold font-weight-sm-normal mb-1 mb-md-0e">Timestamp:</div>
               <div class="col-md-9">
-                {moment.utc(tx.timestamp).fromNow()} ({moment.utc(block[0].timestamp).toDate()})
+                {moment.utc(tx.timestamp).fromNow()} ({moment.utc(tx.timestamp).toDate()})
               </div>
             </div>
 
